@@ -1,7 +1,9 @@
 package coverage
 
 import (
+	"fmt"
 	"os"
+	"testing"
 )
 
 // DO NOT EDIT THIS FUNCTION
@@ -18,3 +20,7 @@ func init() {
 
 // WRITE YOUR CODE BELOW
 
+func TestNew(t *testing.T) {
+	m, ok := New("3 3")
+	fmt.Println(m, ok)
+}
