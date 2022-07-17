@@ -1,7 +1,6 @@
 package coverage
 
 import (
-	"fmt"
 	"os"
 	"sort"
 	"testing"
@@ -53,6 +52,15 @@ func Test_People_Less2(t *testing.T) {
 	}
 }
 
+func Test_People_Less3(t *testing.T) {
+	var pip People
+	pip = append(pip, Person{"Name1", "surname2", time.Unix(1000, 0)})
+	pip = append(pip, Person{"Name1", "surname2", time.Unix(10000000, 0)})
+	if !pip.Less(1, 0) {
+		t.Error("Error func Less2")
+	}
+}
+
 func Test_People_Swap(t *testing.T) {
 	var pip People
 	p0 := Person{"Name1", "surname1", time.Now()}
@@ -87,11 +95,15 @@ func Test_New(t *testing.T) {
 }
 
 func Test_New_Error(t *testing.T) {
-	m, err := New("asd")
-	fmt.Println(err)
-	if (m != nil) && (err.Error() == "Rows need to be the same length") {
+	m, _ := New("asd")
+	if m != nil {
 		t.Error("Error New Matrix Error")
 	}
+	m, _ = New("1 2 3 \n 1 2 3 4 ")
+	if m != nil {
+		t.Error("Error New Matrix Error")
+	}
+
 }
 
 func Test_Matrix_Rows(t *testing.T) {
