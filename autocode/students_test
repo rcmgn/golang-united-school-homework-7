@@ -1,6 +1,7 @@
 package coverage
 
 import (
+	"fmt"
 	"os"
 	"sort"
 	"testing"
@@ -21,7 +22,7 @@ func init() {
 
 // WRITE YOUR CODE BELOW
 
-func TestPeople_Len(t *testing.T) {
+func Test_People_Len(t *testing.T) {
 	var pip People
 	pip = append(pip, Person{"Name1", "surname1", time.Now()})
 	pip = append(pip, Person{"Name2", "surname2", time.Now()})
@@ -30,16 +31,19 @@ func TestPeople_Len(t *testing.T) {
 	}
 }
 
-func TestPeople_Less(t *testing.T) {
+func Test_People_Less(t *testing.T) {
 	var pip People
 	pip = append(pip, Person{"Name1", "surname1", time.Now()})
 	pip = append(pip, Person{"Name2", "surname2", time.Now()})
 	if !pip.Less(0, 1) {
 		t.Error("Error func Less")
 	}
+	if pip.Less(1, 0) {
+		t.Error("Error func Less")
+	}
 }
 
-func TestPeople_Less2(t *testing.T) {
+func Test_People_Less2(t *testing.T) {
 	var pip People
 	age := time.Now()
 	pip = append(pip, Person{"Name", "surname1", age})
@@ -49,7 +53,7 @@ func TestPeople_Less2(t *testing.T) {
 	}
 }
 
-func TestPeople_Swap(t *testing.T) {
+func Test_People_Swap(t *testing.T) {
 	var pip People
 	p0 := Person{"Name1", "surname1", time.Now()}
 	p1 := Person{"Name2", "surname2", time.Now()}
@@ -61,7 +65,7 @@ func TestPeople_Swap(t *testing.T) {
 	}
 }
 
-func TestPeople_Sort(t *testing.T) {
+func Test_People_Sort(t *testing.T) {
 	var pip People
 	p0 := Person{"Name1", "surname1", time.Now()}
 	p1 := Person{"Name2", "surname2", time.Now()}
@@ -73,27 +77,39 @@ func TestPeople_Sort(t *testing.T) {
 	}
 }
 
-func TestNew(t *testing.T) {
-	m, _ := New("1 2 3 \n 4 5 6 \n 7 8 9 \n 10 11 12")
+const mtx string = "1 2 3 \n 4 5 6 \n 7 8 9 \n 10 11 12"
+
+func Test_New(t *testing.T) {
+	m, _ := New(mtx)
 	if (m.Rows()[3][2] != 12) || (m.Rows()[1][2] != 6) {
 		t.Error("Error New Matrix")
 	}
 }
 
-func TestMatrix_Rows(t *testing.T) {
-	m, _ := New("1 2 3 \n 4 5 6 \n 7 8 9 \n 10 11 12")
+func Test_New_Error(t *testing.T) {
+	m, err := New("asd")
+	fmt.Println(err)
+	if (m != nil) && (err.Error() == "Rows need to be the same length") {
+		t.Error("Error New Matrix Error")
+	}
+}
+
+func Test_Matrix_Rows(t *testing.T) {
+	m, _ := New(mtx)
 	if (m.Rows()[3][2] != 12) || (m.Rows()[1][2] != 6) {
 		t.Error("Error Rows")
 	}
 }
 
-func TestMatrix_Cols(t *testing.T) {
-	m, _ := New("1 2 3 \n 4 5 6 \n 7 8 9 \n 10 11 12")
+func Test_Matrix_Cols(t *testing.T) {
+	m, _ := New(mtx)
 	if (m.Cols()[1][1] != 5) || (m.Cols()[2][0] != 3) {
 		t.Error("Error Cols")
 	}
+	fmt.Println(m.Cols()[0][2], m.Cols()[1][3])
 }
-func TestMatrix_Set(t *testing.T) {
+
+func Test_Matrix_Set(t *testing.T) {
 	var m *Matrix
 	m, _ = New("1 2 3 \n 4 5 6 \n 7 8 9 \n 10 11 12")
 	if !m.Set(1, 1, 100) {
